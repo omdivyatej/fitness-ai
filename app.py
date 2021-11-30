@@ -9,7 +9,6 @@ from functions.DailyGoalMeter import GoalCalc
 import cv2
 import mediapipe as mp
 import datetime
-import pyautogui
 import random
 
 app=Flask(__name__)
@@ -489,28 +488,22 @@ def running():
             # cv2.putText(image, str(left_waist_y_coordinate), (100, 200), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 4)
             #Running
             if right_knee_y_coordinate<=running_line or left_knee_y_coordinate<=running_line:
-              pyautogui.keyDown('w')
+              
               footsteps += 1
               cv2.putText(image, "RUNNING", (200, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
-            else:
-                pyautogui.keyUp('w')
+           
 
             # Jump
             if left_waist_y_coordinate < waist_line and right_waist_y_coordinate < waist_line:
                 #print("Jump")
-                pyautogui.keyDown('w')
-                pyautogui.keyDown('space')
-                pyautogui.keyUp('w')
                 jumps += 1
                 cv2.putText(image, "JUMP", (200, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
-            else:
-                pyautogui.keyUp('space')
+
             # Go left
             if right_shoulder_x_coordinate < left_line:
                 print(right_shoulder_x_coordinate)
 
                 if lane != 'left':
-                    pyautogui.keyDown('a')
                     going_left += 1
                     cv2.putText(image, str(going_left), (82, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
                     lane = 'left'
@@ -521,13 +514,13 @@ def running():
                     cv2.line(img=image, pt1=(82, 100), pt2=(82, 100), color=(255, 0, 0), thickness=50, lineType=8,
                              shift=0)
                 cv2.putText(image, "LEFT", (200, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
-                pyautogui.keyUp('a')
+                
             # Go right
             elif left_shoulder_x_coordinate > right_line:
                 print(left_shoulder_x_coordinate)
 
                 if lane != 'right':
-                    pyautogui.keyDown('d')
+                    
                     going_right += 1
                     cv2.putText(image, str(going_right), (412, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
                     lane = 'right'
@@ -537,7 +530,7 @@ def running():
                     cv2.putText(image, str(going_right), (412, 100), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
                     cv2.line(img=image, pt1=(412, 100), pt2=(412, 100), color=(255, 0, 0), thickness=50, lineType=8,
                              shift=0)
-                pyautogui.keyUp('d')
+                
                 cv2.putText(image, "RIGHT", (200, 300), cv2.FONT_HERSHEY_SIMPLEX, 2, (0, 0, 255), 4)
             # Go down
             #elif left_waist_y_coordinate > waist_line + 0.3 and right_waist_y_coordinate > waist_line + 0.3:
@@ -548,13 +541,11 @@ def running():
             elif left_shoulder_x_coordinate >= left_line and right_shoulder_x_coordinate <= right_line:
                 if lane == 'left':
                     print("right")
-                    pyautogui.keyDown('d')
                     cv2.line(img=image, pt1=(240, 200), pt2=(240, 200), color=(255, 0, 0), thickness=50, lineType=8,
                              shift=0)
                     lane='middle'
                 elif lane == 'right':
                     print("left")
-                    pyautogui.press('a')
                     cv2.line(img=image, pt1=(270, 200), pt2=(270, 200), color=(255, 0, 0), thickness=50, lineType=8,
                              shift=0)
                     lane='middle'
@@ -795,4 +786,4 @@ def videoposition():
     return Response(positionlocator(),mimetype='multipart/x-mixed-replace; boundary=frame')
 
 if __name__=="__main__":
-    app.run(debug=True)
+    app.run()
